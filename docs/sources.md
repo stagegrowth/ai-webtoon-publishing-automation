@@ -1,3 +1,4 @@
+<!-- 목적: Notion PRD 페이지 ID·URL·워크스페이스 등 소스 정보. MCP 또는 수동 동기화 시 대상 페이지를 식별할 때 참고합니다. -->
 # Notion PRD 소스 등록
 
 - **project:** ai-webtoon-publishing-automation

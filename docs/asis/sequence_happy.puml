@@ -1,0 +1,67 @@
+' 목적: 현행 정상 흐름 시퀀스 다이어그램. 웹툰 목록(Excel)+웹툰 파일 → 업체 웹페이지 등록 절차를 시각화합니다.
+@startuml asis_happy_path
+!theme plain
+title As-Is Happy Path — 웹툰 목록(Excel) + 웹툰 파일 → 업체 웹페이지 등록
+
+actor "담당자" as User
+participant "Excel\n(웹툰 목록·메타)" as Excel
+participant "웹툰 파일\n(별도 수령)" as Files
+participant "업체 웹페이지\n(카카오/네이버 등)" as Web
+
+== ASIS-00 Preconditions ==
+note over User, Files
+  **사전 조건**
+  - Excel: 웹툰 목록 + 각 웹툰 메타정보
+  - 웹툰 파일: 업로드 대상 파일을 별도로 전달받음
+  - 대상 업체 목록(카카오, 네이버 등)
+end note
+
+== 업체별 반복 (카카오 → 네이버 → …) ==
+
+== ASIS-01 업체 웹페이지 로그인 ==
+User -> Web : [로그인]
+Web --> User : [업체 대시보드/메뉴 표시]
+note right of Web
+  **Input:** ID/비밀번호 (수동)
+  **Output:** 세션, 대시보드
+end note
+
+== ASIS-02 업로드 화면 진입 ==
+User -> Web : [업로드/등록 메뉴 이동]
+Web --> User : [업로드 화면 표시]
+note right of Web
+  업체마다 UX·메뉴 경로 상이
+end note
+
+== 웹툰별 반복 (Excel 목록의 각 행) ==
+
+== ASIS-03 Excel 메타데이터 복사 후 폼에 입력 ==
+User -> Excel : [해당 웹툰 행의 메타정보 확인]
+Excel --> User : [메타데이터]
+User -> Web : [메타데이터 복사·붙여넣기 (폼 입력)]
+Web --> User : [입력 완료/검증 표시]
+note right of Web
+  **Input:** Excel에서 복사한 메타 (제목, 요약 등)
+  **Output:** 폼 입력 완료 상태
+  **Validation:** 업체별 필수 필드·형식
+end note
+
+== ASIS-04 해당 웹툰 파일 등록 ==
+User -> Files : [이번 웹툰에 대응하는 파일 선택]
+Files --> User : [파일]
+User -> Web : [웹툰 파일 첨부·등록]
+Web --> User : [업로드 완료 표시]
+note right of Web
+  **Input:** 별도 전달받은 웹툰 파일 1건
+  **Output:** 업로드 완료, 플랫폼 내 URL/상태
+  **Validation:** 확장자, 용량, 포맷
+end note
+
+== ASIS-05 다음 웹툰 또는 다음 업체 ==
+note over User, Web
+  - Excel 목록에 다음 웹툰이 있으면 → ASIS-03, ASIS-04 반복
+  - 현재 업체 등록이 끝나면 → 다음 업체로 ASIS-01부터 반복
+  - 모두 완료 시 결과 확인(선택)
+end note
+
+@enduml

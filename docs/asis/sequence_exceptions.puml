@@ -1,3 +1,4 @@
+' 목적: 현행 예외 흐름 시퀀스 다이어그램. 검증 실패·네트워크 오류 등 예외(EX-01~EX-05)와 Step ID 연결을 정의합니다.
 @startuml asis_exceptions
 !theme plain
 title As-Is Exceptions (EX-01 ~ EX-05, Step ID 연결)

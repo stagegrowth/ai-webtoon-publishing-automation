@@ -1,4 +1,5 @@
-# As-Is Evidence
+<!-- 목적: As-Is 시연/녹화 타임라인·Pain Points 수집용 템플릿. 고객에게 요청할 Evidence 입력 형식을 정의합니다. -->
+# As-Is 증거 수집 템플릿 (Evidence)
 
 ---
 

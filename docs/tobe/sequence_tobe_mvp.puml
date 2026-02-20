@@ -1,3 +1,4 @@
+' 목적: To-Be MVP 시퀀스 다이어그램. 수동 트리거 기반 오케스트레이션·검증·업로드 흐름을 시각화합니다.
 @startuml tobe_mvp
 !theme plain
 title To-Be MVP (수동 트리거 기반)
