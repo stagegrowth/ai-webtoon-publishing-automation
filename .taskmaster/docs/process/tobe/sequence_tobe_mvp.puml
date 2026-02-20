@@ -1,0 +1,48 @@
+@startuml tobe_mvp
+!theme plain
+title To-Be MVP (수동 트리거 기반)
+
+actor "Operator" as Op
+participant "Trigger (Manual)" as Trigger
+participant "Orchestrator" as Orch
+participant "Validator" as Val
+participant "Uploader" as Up
+participant "Backend/Storage" as Back
+
+== dry-run ==
+Op -> Trigger : [수동 실행]
+Trigger -> Orch : start(dry_run=true)
+Orch -> Val : validate(input)
+Val --> Orch : result
+Orch --> Trigger : report (no side effects)
+Trigger --> Op : [결과 표시]
+
+== validate ==
+Op -> Trigger : [검증만 실행]
+Trigger -> Orch : start(validate_only=true)
+Orch -> Val : validate(input)
+Val --> Orch : result
+Orch --> Trigger : report
+Trigger --> Op : [결과 표시]
+
+== upload ==
+Op -> Trigger : [업로드 실행]
+Trigger -> Orch : start()
+Orch -> Val : validate(input)
+Val --> Orch : ok
+Orch -> Up : upload(assets)
+Up -> Back : [전송]
+Back --> Up : ack
+Up --> Orch : done
+Orch --> Trigger : report
+Trigger --> Op : [결과 표시]
+
+== submit ==
+Op -> Trigger : [제출/완료]
+Trigger -> Orch : submit()
+Orch -> Back : [상태 반영]
+Back --> Orch : ok
+Orch --> Trigger : report
+Trigger --> Op : [완료]
+
+@enduml

@@ -2,7 +2,13 @@
   "mcpServers": {
     "taskmaster-ai": {
       "command": "npx",
-      "args": ["-y", "task-master-ai"]
+      "args": [
+        "-y",
+        "task-master-mcp"
+      ]
+    },
+    "notion": {
+      "url": "https://mcp.notion.com/mcp"
     }
   }
 }
