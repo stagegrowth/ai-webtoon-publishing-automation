@@ -1,0 +1,65 @@
+@startuml asis_exceptions
+!theme plain
+title As-Is Exceptions (EX-01 ~ EX-05, Step ID 연결)
+
+actor "Customer" as Customer
+participant "Web Admin UI" as UI
+participant "Backend API" as API
+
+== EX-01 Validation Failure ==
+Customer -> UI : [입력]
+UI -> API : [요청]
+API --> API : validate
+API --> UI : 4xx + message
+UI --> Customer : [오류 표시]
+note over API
+  **발생 Step:** ASIS-04a, ASIS-05 (메타 입력·검증 단계)
+  **자동화 시 기대:** 검증 실패 시 즉시 피드백·재입력 유도, 로그 적재
+end note
+
+== EX-02 Upload Failure ==
+Customer -> UI : [업로드]
+UI -> API : [파일 전송]
+API --> API : upload
+API --> UI : 5xx / timeout
+UI --> Customer : [실패 안내]
+note over API
+  **발생 Step:** ASIS-04b, ASIS-07 (파일·에셋 업로드)
+  **자동화 시 기대:** 재시도·청크 재전송·실패 시 큐 보관 후 알림
+end note
+
+== EX-03 Duplicate Conflict ==
+Customer -> UI : [동일 항목 제출]
+UI -> API : [요청]
+API --> API : duplicate check
+API --> UI : 409 Conflict
+UI --> Customer : [중복 안내]
+note over API
+  **발생 Step:** ASIS-04a, ASIS-10 (에피소드 등록·발행 요청)
+  **자동화 시 기대:** 중복 시 스킵/덮어쓰기 정책 선택, 또는 사용자 확인 후 진행
+end note
+
+== EX-04 Permission Issue ==
+Customer -> UI : [액션]
+UI -> API : [요청]
+API --> API : authz check
+API --> UI : 403 Forbidden
+UI --> Customer : [권한 안내]
+note over API
+  **발생 Step:** ASIS-01 이후 전 단계 (세션·리소스 권한)
+  **자동화 시 기대:** 서비스 계정/역할 기반 권한으로 자동 수행, 실패 시 담당자 알림
+end note
+
+== EX-05 Downstream Failure ==
+Customer -> UI : [액션]
+UI -> API : [요청]
+API -> API : call external/db
+note right : external/db 실패
+API --> UI : 5xx / partial failure
+UI --> Customer : [오류/재시도 안내]
+note over API
+  **발생 Step:** ASIS-10 (플랫폼 API), ASIS-06/07 (외부 AI·Storage)
+  **자동화 시 기대:** 재시도·회로 차단·보상 트랜잭션 또는 수동 개입 알림
+end note
+
+@enduml

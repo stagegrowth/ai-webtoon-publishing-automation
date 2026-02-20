@@ -1,0 +1,8 @@
+{
+  "data": {
+    "page_id": "3069f1bf-3171-807f-abde-d74c9bb72f47",
+    "command": "replace_content",
+    "new_str": "# 0. Change Log\n\n| 날짜 | 버전 | 변경 내용 | 작성자 |\n|------|------|-----------|--------|\n| [YYYY-MM-DD] | v0.1 | 초안 작성 | [이름] |\n\n---\n\n# 1. Goal / One-liner\n\n(이곳에 .taskmaster/docs/notion/prd_for_notion_insert.md 전체 내용을 넣으면 됨. 실제 호출 시 new_str 을 파일 내용으로 치환.)",
+    "allow_deleting_content": true
+  }
+}
