@@ -1,3 +1,4 @@
+<!-- 목적: As-Is 자동화의 입출력·스키마·Step 매핑 등 데이터 계약 정의. 문서를 열면 용도를 바로 확인할 수 있습니다. -->
 # Data Contract (As-Is)
 
 ## Work / Item / Asset 엔티티
@@ -40,21 +41,16 @@
 
 Step ID와 입·출력 데이터의 대응 관계. 시퀀스(sequence_happy.puml)의 ASIS Step과 연계한다.
 
+**현행 플로우**: Excel(웹툰 목록·메타) + 별도 수령 웹툰 파일 → 업체별 로그인 → 업로드 화면 → (웹툰별) 메타 복사·입력 → 웹툰 파일 등록.
+
 | Step ID | Data inputs | Data outputs | Notes |
 |---------|--------------|--------------|-------|
-| ASIS-01 | credentials (id, password) | session_id, user_id | 인증; 자동화 시 API key / service account |
-| ASIS-02 | (선택 입력 또는 기본값) | workspace_id, project_id | 자동화 시 설정/환경 변수로 고정 가능 |
-| ASIS-03 | title, genre, [설명 등] | work_id, status | Work 엔티티 생성; 필수: title |
-| ASIS-04a | item_no, title, summary, [visibility 등] | item_id, episode_no | Item 메타; item_no 중복 불가 |
-| ASIS-04b | 원고 파일(경로/바이너리), item_id | asset path, version | Asset 저장; 확장자·용량 검증 |
-| ASIS-05 | item_id, work_id | validation_report, errors[] | 검증 규칙 적용 후 report 반환 |
-| ASIS-06 | (선택) 콘티/구조 데이터 | conti_id, structure | 선택 단계; 스키마는 추후 정의 |
-| ASIS-07 | 이미지 파일, 메타 | asset_id, url, thumbnail | 에셋 업로드; 해상도·용량 검증 |
-| ASIS-08 | 수정 필드(메타/경로) | status, updated_at | PATCH 스타일 업데이트 |
-| ASIS-09 | platform_ids[], options | target_platforms[], settings | 발행 대상·옵션; enum은 placeholder |
-| ASIS-10 | item_id, work_id, targets | job_id, status, report | 발행 트리거; 사전 검증 통과 필요 |
-| ASIS-11 | job_id 또는 item_id | status, platform_url, errors | 결과 조회 |
-| ASIS-12 | (조회만) | 검증 결과 요약 | Post-Check; 수동 확인 가이드 |
+| ASIS-00 | (사전 준비) | — | Excel(웹툰 목록·메타), 웹툰 파일(별도 전달), 대상 업체 목록 |
+| ASIS-01 | credentials (id, password) | session_id, 쿠키/세션 | 업체 웹페이지 로그인; 자동화 시 계정·세션 정책에 따름 |
+| ASIS-02 | (메뉴 이동) | 업로드 화면 URL/상태 | 업로드(등록) 화면 진입; 업체마다 UX 상이 |
+| ASIS-03 | Excel 행(메타: 제목, 요약 등) | 폼 입력 완료 상태 | Excel에서 복사한 메타를 업체 폼에 입력; 업체별 필수 필드 |
+| ASIS-04 | 웹툰 파일(경로/바이너리), 해당 웹툰 식별 | 업로드 완료, 플랫폼 내 URL/상태 | 해당 웹툰에 맞는 파일 1건 등록; 확장자·용량 검증 |
+| ASIS-05 | (반복 제어) | 다음 웹툰/다음 업체 | Excel 다음 행 또는 다음 업체; 결과 확인(선택) |
 
 ---
 

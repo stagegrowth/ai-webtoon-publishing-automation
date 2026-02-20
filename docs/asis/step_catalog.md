@@ -1,11 +1,14 @@
+<!-- 목적: 현행 업로드 절차의 Step 목록·Traceability·Evidence Timestamp 정리. As-Is 분석과 To-Be 설계의 기준 목록입니다. -->
 # Step Catalog (As-Is)
 
 | Step ID | Step Name | Automation Type | Priority | Evidence Timestamp | 비고 |
 |---------|-----------|-----------------|----------|--------------------|------|
-| S1 | [      ] | [ ] Manual [ ] Semi [ ] Full | [ ] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | [      ] |
-| S2 | [      ] | [ ] Manual [ ] Semi [ ] Full | [ ] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | [      ] |
-| S3 | [      ] | [ ] Manual [ ] Semi [ ] Full | [ ] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | [      ] |
-| … | | | | | |
+| ASIS-00 | 사전 조건 (Excel·웹툰 파일 준비) | [ ] Manual [x] Semi [ ] Full | [ ] High [x] Mid [ ] Low | [YYYY-MM-DD HH:MM] | 입력물 준비 |
+| ASIS-01 | 업체 웹페이지 로그인 | [x] Manual [ ] Semi [ ] Full | [x] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | 업체별 반복 |
+| ASIS-02 | 업로드 화면 진입 | [x] Manual [ ] Semi [ ] Full | [x] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | 업체별 반복 |
+| ASIS-03 | Excel 메타데이터 복사 후 폼에 입력 | [x] Manual [ ] Semi [ ] Full | [x] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | 웹툰별 반복 |
+| ASIS-04 | 해당 웹툰 파일 등록 | [x] Manual [ ] Semi [ ] Full | [x] High [ ] Mid [ ] Low | [YYYY-MM-DD HH:MM] | 웹툰별 반복 |
+| ASIS-05 | 결과 확인 / 다음 웹툰·다음 업체 반복 | [x] Manual [ ] Semi [ ] Full | [ ] High [x] Mid [ ] Low | [YYYY-MM-DD HH:MM] | 반복 제어 |
 
 **Automation Type**: Manual = 전부 수동, Semi = 일부 자동, Full = 완전 자동
 
@@ -18,8 +21,8 @@
 - **규칙 요약**:
   - `ASIS-NN` : N번째 메인 단계
   - `ASIS-NNa` / `ASIS-NNb` : N번째 단계의 첫 번째/두 번째 하위 액션
-- **예시**: 로그인 → 프로젝트 선택 → 에피소드 등록 시  
-  `ASIS-01` 로그인, `ASIS-02` 프로젝트 선택, `ASIS-03a` 메타 입력, `ASIS-03b` 파일 업로드
+- **예시(현행)**: 로그인 → 업로드 화면 진입 → (웹툰별) 메타 입력·파일 등록  
+  `ASIS-01` 로그인, `ASIS-02` 업로드 화면 진입, `ASIS-03` 메타 복사·입력, `ASIS-04` 웹툰 파일 등록
 
 ---
 
@@ -50,22 +53,18 @@
 
 Step Catalog ↔ 시퀀스·데이터 계약·고객 Q&A 연결표. 시퀀스에서 사용한 ASIS Step ID 기준으로 연결합니다.
 
-| Step ID | sequence_happy.puml 위치(섹션) | data_contract 섹션 | customer Q&A 질문 ID(optional) |
-|---------|--------------------------------|--------------------|--------------------------------|
-| ASIS-00 | Preconditions | (사전 조건) | [      ] |
-| ASIS-01 | 로그인/세션 | (세션·사용자) | [      ] |
-| ASIS-02 | 워크스페이스·프로젝트 선택 | Work 엔티티 (workspace/project) | [      ] |
-| ASIS-03 | 작품(Work) 생성/선택 | Work 엔티티 | [      ] |
-| ASIS-04a | 에피소드(Item) 메타 입력 | Item 엔티티, 메타 필드 | [      ] |
-| ASIS-04b | 에피소드 원고/파일 업로드 | Asset 엔티티, 파일 규격 | [      ] |
-| ASIS-05 | 원고 검증(클라이언트/서버) | Validation Rules, Outputs | [      ] |
-| ASIS-06 | 콘티/구조화 (선택) | Item 엔티티, 메타 필드 | [      ] |
-| ASIS-07 | 에셋(이미지/메타) 생성·첨부 | Asset 엔티티, 파일 규격 | [      ] |
-| ASIS-08 | 최종 검토·수정 | Item/Asset, 메타 필드 | [      ] |
-| ASIS-09 | 플랫폼 대상 선택·설정 | (설정/플랫폼) | [      ] |
-| ASIS-10 | 업로드/발행 요청 | Outputs, Validation Rules | [      ] |
-| ASIS-11 | 발행 결과 확인 | Outputs | [      ] |
-| ASIS-12 | Post-Check/완료 | (검증 결과) | [      ] |
+**현행 플로우 요약**: Excel에 웹툰 목록(메타정보) + 별도 전달받은 웹툰 파일 → 업체별 로그인 → 업로드 화면 진입 → (웹툰별 반복) Excel 메타 복사·입력 → 해당 웹툰 파일 등록 → 다음 웹툰/다음 업체 반복.
+
+| Step ID | Step Name | sequence_happy.puml 위치(섹션) | data_contract 섹션 | customer Q&A 질문 ID(optional) |
+|---------|-----------|--------------------------------|--------------------|--------------------------------|
+| ASIS-00 | 사전 조건 (Excel·웹툰 파일 준비) | Preconditions | (사전 조건) | [      ] |
+| ASIS-01 | 업체 웹페이지 로그인 | 로그인/세션 | (세션·사용자) | [      ] |
+| ASIS-02 | 업로드 화면 진입 | 업로드 화면 진입 | (화면 경로) | [      ] |
+| ASIS-03 | (웹툰별) Excel 메타데이터 복사 후 폼에 입력 | 메타 복사·입력 | Excel/메타 필드 | [      ] |
+| ASIS-04 | (웹툰별) 해당 웹툰 파일 등록 | 웹툰 파일 등록 | 웹툰 파일 규격 | [      ] |
+| ASIS-05 | 결과 확인(선택) / 다음 웹툰·다음 업체 반복 | 반복·완료 | Outputs | [      ] |
+
+- **반복 구조**: ASIS-03, ASIS-04는 Excel 목록의 **웹툰 개수만큼** 반복. ASIS-01~05는 **대상 업체(카카오, 네이버 등)마다** 반복.
 
 ---
 

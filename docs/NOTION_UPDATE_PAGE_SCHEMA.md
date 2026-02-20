@@ -1,3 +1,4 @@
+<!-- 목적: Notion MCP replace_content(notion-update-page) 호출 시 사용하는 파라미터 스키마·명령 정의. 개발/자동화 참고용. -->
 # Notion MCP: `notion-update-page` 도구 파라미터 스키마
 
 ## 1. 요약
@@ -119,7 +120,7 @@
 
 ## 4. `prd_for_notion_insert.md` 를 넣기 위한 최소 예시
 
-대상 파일: `.taskmaster/docs/notion/prd_for_notion_insert.md`  
+대상 파일: `docs/prd_for_notion_insert.md`  
 목표: 해당 파일 전체를 Notion 페이지 **본문**에 넣기 (전체 교체).
 
 ### 4.1 사용할 명령
@@ -136,7 +137,7 @@
   "data": {
     "page_id": "3069f1bf-3171-807f-abde-d74c9bb72f47",
     "command": "replace_content",
-    "new_str": "<파일 .taskmaster/docs/notion/prd_for_notion_insert.md 의 전체 텍스트>",
+    "new_str": "<파일 docs/prd_for_notion_insert.md 의 전체 텍스트>",
     "allow_deleting_content": true
   }
 }
