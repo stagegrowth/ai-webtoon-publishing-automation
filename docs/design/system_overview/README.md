@@ -7,3 +7,4 @@
 | [system_context_diagram.md](system_context_diagram.md) | 시스템 컨텍스트 다이어그램 (시스템·사용자·외부 시스템·상호작용) |
 | [system_feature_list.md](system_feature_list.md) | 시스템 기능 목록 (도메인별 기능·MVP 참고) |
 | [assumptions_about_the_system.md](assumptions_about_the_system.md) | 시스템에 대한 가정 (Assumptions about the System) |
+| [element_id_mapping.md](element_id_mapping.md) | 요소 ID 맵핑 (요구사항·데이터 구조·사용자 인터페이스) |
